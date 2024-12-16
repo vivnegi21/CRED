@@ -5,7 +5,8 @@
  * @format
  */
 
-import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -16,6 +17,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import BootSplash from "react-native-bootsplash";
 
 import {
   Colors,
@@ -62,37 +64,29 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  useEffect(() => {
+    const init = async () => {
+      // …do multiple sync or async tasks
+      fetch('https://api.mocklets.com/p6764/test_mint').then(response=> response.json()).then(async (resp)=>{
+        console.log('response..........',resp)
+        await BootSplash.hide({fade: true})
+      })
+    };
+
+    init()
+  }, []);
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <>
+    <StatusBar backgroundColor={'white'} translucent={true} barStyle={'dark-content'}/>
+    <SafeAreaView style={{flex:1, backgroundColor:'white', justifyContent:'center', alignItems:'center'}}>
+    <NavigationContainer>
+      <View>
+        <Text style={{textAlign:'center', fontSize:50}}>Hello World</Text>
+      </View>
+    </NavigationContainer>
     </SafeAreaView>
+    </>
   );
 }
 
